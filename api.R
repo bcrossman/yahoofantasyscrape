@@ -12,11 +12,11 @@ myapp <- oauth_app("yahoo_app", key = consumer.key, secret = consumer.secret)
 token <- oauth1.0_token(yahoo, myapp,cache=F)
 
 #this is specific to the game and league you want to pull from
-game<-"328"  #last years Fantasy Baseball
-league<- "62586"  #my personal league
+game<-"mlb"  #last years Fantasy Baseball
+leagueID <- "62586"  #my personal league
 
 #getting transactions although the process works well for digging into most collections
-response<-GET(paste("http://fantasysports.yahooapis.com/fantasy/v2/league/",game,".l.",league,"/transactions",sep=""), config(token = token))
+response<-GET(paste("http://fantasysports.yahooapis.com/fantasy/v2/league/",game,".l.",leagueID,"/transactions",sep=""), config(token = token))
 doc<-htmlParse(response)
 root<-xmlRoot(doc)
 xmlSize(root)
@@ -45,8 +45,7 @@ View(tran.df)
 #Pull all player rosters
 rosters<-list()
 for(i in 1:10){
-  url<-paste("http://fantasysports.yahooapis.com/fantasy/v2/team/",game,".l.",league,".t.",sep="")
-  i<-1
+  url<-paste("http://fantasysports.yahooapis.com/fantasy/v2/team/",game,".l.",leagueID,".t.",sep="")
   iurl<-paste(url,i,"/roster/players",sep="")
   response<-GET(iurl, config(token = token))
   doc<-htmlParse(response)
